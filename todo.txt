@@ -1,0 +1,7 @@
+create order
+1. write test for controller
+2. write test for the DB
+3. write test for the usecase
+
+-------------------------------------
+user
