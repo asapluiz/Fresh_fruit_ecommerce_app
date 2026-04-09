@@ -7,11 +7,16 @@ from application.port.outgoing.interface_order_repository import IOrderRepositor
 from application.domain.orderTaking.model.orderItem import OrderLine
 
 @dataclass
+class CreateOrderLineDTO:
+    product_id: str
+    quantity: int
+    price: float
+@dataclass
 class CreateOrderDTO():
     billing_address: str
     delivery_address: str
     customer_id: str
-    order_lines: List[OrderLine]
+    order_lines: List[CreateOrderLineDTO]
 
 @dataclass
 class CreateOrderResponseDTO():
