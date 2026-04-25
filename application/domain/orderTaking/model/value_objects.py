@@ -1,3 +1,6 @@
+from application.domain.orderTaking.exceptions import OrderError
+
+
 class OrderQuantity:
     """Value object representing an order quantity with domain constraints"""
     MAX_QUANTITY = 100
@@ -5,11 +8,11 @@ class OrderQuantity:
     
     def __init__(self, value: int):
         if not isinstance(value, int):
-            raise ValueError("Quantity must be an integer")
+            raise OrderError("Quantity must be an integer")
         if value < self.MIN_QUANTITY:
-            raise ValueError(f"Quantity must be at least {self.MIN_QUANTITY}")
+            raise OrderError(f"Quantity must be at least {self.MIN_QUANTITY}")
         if value > self.MAX_QUANTITY:
-            raise ValueError(f"Quantity cannot exceed {self.MAX_QUANTITY}")
+            raise OrderError(f"Quantity cannot exceed {self.MAX_QUANTITY}")
         self._value = value
     
     @property
@@ -32,7 +35,7 @@ class Money:
     """Value object for amounts to bill"""
     def __init__(self, amount: float, currency: str = "USD"):
         if amount <= 0:
-            raise ValueError("Amount must be greater than 0")
+            raise OrderError("Amount must be greater than 0")
         self._amount = amount
         self._currency = currency
     
@@ -57,7 +60,7 @@ class Address:
     """Value object for delivery/billing addresses"""
     def __init__(self, address: str):
         if not address or len(address.strip()) == 0:
-            raise ValueError("Address cannot be empty")
+            raise OrderError("Address cannot be empty")
         self._address = address
     
     @property

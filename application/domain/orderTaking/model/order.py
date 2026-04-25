@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import List
 
+from application.domain.orderTaking.exceptions import OrderError
 from application.domain.orderTaking.model.DTO_to_order import CreateOrderFromDTO, ValidationErrors
 from application.domain.orderTaking.model.orderItem import OrderLine
 from application.domain.orderTaking.model.types import OrderDTO
@@ -40,12 +41,12 @@ class Order:
 
     def cancel(self) -> None:
         if self.order_status in [OrderStatus.SHIPPED, OrderStatus.DELIVERED]:
-            raise ValueError("Cannot cancel shipped/delivered orders")
+            raise OrderError("Cannot cancel shipped/delivered orders")
         self.order_status = OrderStatus.CANCELLED
 
     def confirmed(self) -> None:
         if self.order_status != OrderStatus.CONFIRMED:
-            raise ValueError("Only pending orders can be confirmed")
+            raise OrderError("Only pending orders can be confirmed")
         self.order_status = OrderStatus.CONFIRMED
 
 

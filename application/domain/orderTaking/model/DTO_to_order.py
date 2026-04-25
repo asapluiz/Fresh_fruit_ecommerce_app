@@ -1,5 +1,6 @@
 
 from typing import List, Union
+from application.domain.orderTaking.exceptions import OrderError
 from application.domain.orderTaking.model.types import OrderDTO, OrderLineDTO
 from application.domain.orderTaking.model.orderItem import OrderLine
 from application.domain.orderTaking.model.value_objects import Address, Money, OrderQuantity
@@ -19,7 +20,7 @@ class CreateOrderFromDTO:
         converted_delivery = self._convert_address(command.delivery_address, "delivery_address")
 
         if self.errors:
-            raise ValueError(f"Validation failed: {', '.join(self.errors)}")
+            raise OrderError(f"Validation failed: {', '.join(self.errors)}")
         
         return {
             "order_id": command.order_id,
@@ -55,14 +56,14 @@ class CreateOrderFromDTO:
         
         try:
             quantity = OrderQuantity(line.quantity)
-        except ValueError as e:
+        except OrderError as e:
             self.errors.append(f"Order line {index + 1}: quantity - {str(e)}")
             return
         
         # Convert price (float) to Money value object
         try:
             price = Money(line.price)
-        except ValueError as e:
+        except OrderError as e:
             self.errors.append(f"Order line {index + 1}: price - {str(e)}")
             return
         
@@ -77,7 +78,7 @@ class CreateOrderFromDTO:
         """Convert string to Address value object"""
         try:
             return Address(address)
-        except ValueError as e:
+        except OrderError as e:
             self.errors.append(f"{field_name}: {str(e)}")
 
 

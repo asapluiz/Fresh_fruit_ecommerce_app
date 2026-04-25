@@ -1,6 +1,6 @@
 mypy - 1.19.1
 pymongo - 4.16.0
 motor - 3.7.1
-beanie - 2.0.1
+beanie - 1.26.0
 pytest - 9.0.2
 alembic - 1.18.4
